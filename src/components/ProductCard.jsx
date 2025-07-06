@@ -15,7 +15,7 @@ const ProductCard = ({ product }) => {
   return (
     <div
       onClick={() => navigate(`/product/${product._id}`)}
-      className="cursor-pointer  rounded-xl overflow-hidden bg-[#FFF2F2] transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+      className="cursor-pointer  rounded-xl overflow-hidden bg-[#F6F6F6] transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
     >
       {/* Image container with consistent aspect ratio and added margin */}
       <div className="relative pb-[125%] overflow-hidden m-3 ">
@@ -35,7 +35,7 @@ const ProductCard = ({ product }) => {
         {/* ✅ Only show Sizes if NOT Sarees and sizes exist */}
         {product.category !== "Sarees" && sizes.length > 0 && (
           <p className="text-gray-500 text-sm">
-            Sizes: {sizes.join(", ")}
+            Size: {sizes.join(", ")}
           </p>
         )}
 

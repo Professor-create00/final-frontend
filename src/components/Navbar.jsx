@@ -40,7 +40,7 @@ const Navbar = () => {
           <Link to="/" className="hover:text-blue-600 text-md">Home</Link>
           <Link to="/category/Sarees" className="hover:text-blue-600 text-md">Sarees</Link>
           <Link to="/category/Salwar Kurti" className="hover:text-blue-600 text-md">Salwar Kurti</Link>
-          <Link to="/category/Nighty" className="hover:text-blue-600 text-md">Nighty</Link>
+          <Link to="/category/Nighty" className="hover:text-blue-600 text-md">Night dress</Link>
           <Link to="/category/Pickle" className="hover:text-blue-600 text-md">Pickles</Link>
           <Link to="/category/Masalas" className="hover:text-blue-600 text-md">Masalas</Link>
         </div>
@@ -92,7 +92,7 @@ const Navbar = () => {
           <Link to="/" className="block hover:text-blue-600">Home</Link>
           <Link to="/category/Sarees" className="block hover:text-blue-600">Sarees</Link>
           <Link to="/category/Salwar Kurti" className="block hover:text-blue-600">Salwar Kurti</Link>
-          <Link to="/category/Nighty" className="block hover:text-blue-600">Nighty</Link>
+          <Link to="/category/Nighty" className="block hover:text-blue-600">Night dress</Link>
           <Link to="/category/Pickle" className="block hover:text-blue-600">Pickles</Link>
           <Link to="/category/Masalas" className="block hover:text-blue-600">Masalas</Link>
 
