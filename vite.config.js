@@ -3,11 +3,8 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: './', // keeps relative paths for assets
+  base: '/', // ✅ absolute paths so assets load on refresh
   build: {
-    outDir: 'dist', // default is fine but explicit
+    outDir: 'dist', // ✅ fine, default is dist
   },
-  server: {
-    historyApiFallback: true, // critical for React Router during dev
-  }
 });
