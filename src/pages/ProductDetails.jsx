@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { addToCart } from "../utils/cart";
+import Lottie from "lottie-react";
+import loadingAnimation from "../assets/loading.json"; 
 
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -58,8 +60,17 @@ const ProductDetailPage = () => {
     }
   };
 
-  if (!product) return <p className="text-center mt-10 text-base font-medium">Loading product...</p>;
-
+  if (!product)
+    return (
+      <div className="flex justify-center items-center h-[50vh]">
+        <Lottie
+          animationData={loadingAnimation}
+          loop
+          autoplay
+          className="w-48 h-48 sm:w-64 sm:h-64"
+        />
+      </div>
+    );
   return (
     <div className="container mx-auto px-4 py-8 font-sans relative">
       {/* Notification UI */}
@@ -108,8 +119,7 @@ const ProductDetailPage = () => {
           <p className="text-lg sm:text-xl font-semibold mb-2 text-green-700">₹{product.price}</p>
 
           {/* Buttons - Always side by side */}
-          <div className="flex flex-row gap-2 sm:gap-3 w-60">  
-            {/* w-60 added by me above */}
+          <div className="flex flex-row gap-2 sm:gap-3 w-60">
             <button
               onClick={handleAddToCart}
               className="flex-1 bg-green-600 text-white px-3 py-2 rounded-md shadow text-sm sm:text-base hover:bg-green-700 transition"
