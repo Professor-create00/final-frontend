@@ -1,12 +1,12 @@
-
-
 import React, { useEffect, useState } from "react";
 import { getCart, updateQuantity, removeFromCart, clearCart } from "../utils/cart";
 import axios from "axios";
-import { FiTrash2, FiPlus, FiMinus, FiShoppingCart } from "react-icons/fi";
+import { FiTrash2, FiPlus, FiMinus } from "react-icons/fi";
+import Lottie from "lottie-react";
+import emptyCartAnimation from "../assets/emptycart.json"; // your Lottie file
 
 const CartPage = () => {
-const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
   const [total, setTotal] = useState(0);
   const [showForm, setShowForm] = useState(false);
   const [orderData, setOrderData] = useState({
@@ -71,8 +71,11 @@ const [cartItems, setCartItems] = useState([]);
         })),
       };
 
-      await axios.post( `${import.meta.env.VITE_API_BASE_URL}/orders`, orderPayload);
-      
+      await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/orders`,
+        orderPayload
+      );
+
       showNotification("Order placed successfully!", "success");
       clearCart();
       setCartItems([]);
@@ -90,23 +93,30 @@ const [cartItems, setCartItems] = useState([]);
   if (cartItems.length === 0) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-12 text-center">
-        <FiShoppingCart className="mx-auto text-5xl text-gray-400 mb-4" />
-        <h1 className="text-2xl font-medium text-gray-700 mb-2">Your cart is empty</h1>
-        <p className="text-gray-500">Start shopping to add items to your cart</p>
+        <Lottie
+          animationData={emptyCartAnimation}
+          loop
+          autoplay
+          className="w-60 h-60 sm:w-80 sm:h-80 mx-auto"
+        />
+        <p className="text-gray-500 text-base sm:text-lg mt-4">Your cart is empty. Start shopping now!</p>
       </div>
     );
   }
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Notification */}
       {notification.show && (
-        <div className={`fixed top-4 right-4 z-50 px-6 py-3 rounded-md shadow-lg transition-all duration-300 ${
-          notification.type === "success" 
-            ? "bg-green-100 text-green-800 border border-green-200" 
-            : notification.type === "error"
+        <div
+          className={`fixed top-4 right-4 z-50 px-6 py-3 rounded-md shadow-lg transition-all duration-300 ${
+            notification.type === "success"
+              ? "bg-green-100 text-green-800 border border-green-200"
+              : notification.type === "error"
               ? "bg-red-100 text-red-800 border border-red-200"
               : "bg-blue-100 text-blue-800 border border-blue-200"
-        }`}>
+          }`}
+        >
           {notification.message}
         </div>
       )}
@@ -115,12 +125,13 @@ const [cartItems, setCartItems] = useState([]);
 
       <div className="grid gap-6 md:grid-cols-3">
         {/* Cart Items */}
-   
-        {/* Cart Items */}
         <div className="md:col-span-2 bg-white rounded-lg shadow-sm overflow-hidden">
           {cartItems.map((item) => (
-            <div key={item.product._id} className="p-4 border-b last:border-b-0">
-              {/* Mobile View (stacked) */}
+            <div
+              key={item.product._id}
+              className="p-4 border-b last:border-b-0"
+            >
+              {/* Mobile View */}
               <div className="md:hidden">
                 <div className="flex items-start">
                   <img
@@ -132,20 +143,28 @@ const [cartItems, setCartItems] = useState([]);
                     <h2 className="font-medium text-gray-800 text-base line-clamp-2">
                       {item.product.name}
                     </h2>
-                    <p className="text-gray-600 text-base mt-1">₹{item.product.price}</p>
+                    <p className="text-gray-600 text-base mt-1">
+                      ₹{item.product.price}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center justify-between mt-4 pl-24">
                   <div className="flex items-center space-x-4">
                     <button
-                      onClick={() => handleQuantityChange(item.product._id, item.quantity - 1)}
+                      onClick={() =>
+                        handleQuantityChange(item.product._id, item.quantity - 1)
+                      }
                       className="p-1 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600"
                     >
                       <FiMinus size={18} />
                     </button>
-                    <span className="w-8 text-center font-medium text-base">{item.quantity}</span>
+                    <span className="w-8 text-center font-medium text-base">
+                      {item.quantity}
+                    </span>
                     <button
-                      onClick={() => handleQuantityChange(item.product._id, item.quantity + 1)}
+                      onClick={() =>
+                        handleQuantityChange(item.product._id, item.quantity + 1)
+                      }
                       className="p-1 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600"
                     >
                       <FiPlus size={18} />
@@ -156,12 +175,11 @@ const [cartItems, setCartItems] = useState([]);
                     className="flex items-center text-red-500 hover:text-red-600"
                   >
                     <FiTrash2 size={20} className="ml-2" />
-         
                   </button>
                 </div>
               </div>
 
-              {/* Desktop View (inline) */}
+              {/* Desktop View */}
               <div className="hidden md:flex items-center justify-between">
                 <div className="flex items-center flex-1">
                   <img
@@ -173,20 +191,28 @@ const [cartItems, setCartItems] = useState([]);
                     <h2 className="font-medium text-gray-800 text-base line-clamp-1">
                       {item.product.name}
                     </h2>
-                    <p className="text-gray-600 text-base mt-1">₹{item.product.price}</p>
+                    <p className="text-gray-600 text-base mt-1">
+                      ₹{item.product.price}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-6">
                   <div className="flex items-center space-x-4">
                     <button
-                      onClick={() => handleQuantityChange(item.product._id, item.quantity - 1)}
+                      onClick={() =>
+                        handleQuantityChange(item.product._id, item.quantity - 1)
+                      }
                       className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600"
                     >
                       <FiMinus size={18} />
                     </button>
-                    <span className="w-8 text-center font-medium text-base">{item.quantity}</span>
+                    <span className="w-8 text-center font-medium text-base">
+                      {item.quantity}
+                    </span>
                     <button
-                      onClick={() => handleQuantityChange(item.product._id, item.quantity + 1)}
+                      onClick={() =>
+                        handleQuantityChange(item.product._id, item.quantity + 1)
+                      }
                       className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600"
                     >
                       <FiPlus size={18} />
@@ -203,22 +229,20 @@ const [cartItems, setCartItems] = useState([]);
             </div>
           ))}
         </div>
+
         {/* Order Summary */}
         <div className="bg-white rounded-lg shadow-sm p-6 h-fit sticky top-4">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">Order Summary</h2>
-          
           <div className="space-y-3 mb-6">
             <div className="flex justify-between">
               <span className="text-gray-600">Subtotal</span>
               <span className="font-medium">₹{total.toLocaleString()}</span>
             </div>
-          
             <div className="border-t pt-3 flex justify-between">
               <span className="text-gray-800 font-semibold">Total</span>
               <span className="text-lg font-bold text-gray-900">₹{total.toLocaleString()}</span>
             </div>
           </div>
-
           <button
             onClick={() => setShowForm(true)}
             className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-medium transition"
@@ -302,8 +326,6 @@ const [cartItems, setCartItems] = useState([]);
         </div>
       )}
     </div>
-
-     
   );
 };
 

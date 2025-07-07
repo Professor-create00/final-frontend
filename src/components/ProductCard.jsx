@@ -8,14 +8,13 @@ import { useNavigate } from "react-router-dom";
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
 
-  // Make sure size is always treated as array
   const sizes =
     Array.isArray(product.size) ? product.size : product.size ? [product.size] : [];
 
   return (
     <div
       onClick={() => navigate(`/product/${product._id}`)}
-      className="cursor-pointer  rounded-xl overflow-hidden bg-[#F6F6F6] transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+      className="cursor-pointer  rounded-xl overflow-hidden bg-[#b3d6ff] transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
     >
       {/* Image container with consistent aspect ratio and added margin */}
       <div className="relative pb-[125%] overflow-hidden m-3 ">

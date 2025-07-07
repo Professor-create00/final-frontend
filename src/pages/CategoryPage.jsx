@@ -1,8 +1,10 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import ProductCard from "../components/ProductCard";
+import Lottie from "lottie-react";
+import loadingAnimation from "../assets/loading.json";
+import notFoundAnimation from "../assets/notfound.json";
 
 const CategoryPage = () => {
   const { categoryName } = useParams();
@@ -33,15 +35,15 @@ const CategoryPage = () => {
     const lowerQuery = query.toLowerCase();
     let priceFilter = null;
 
-    // Detect "under" or "below" keywords for price
     const priceMatch = lowerQuery.match(/under\s*(\d+)|below\s*(\d+)/);
     if (priceMatch) {
       priceFilter = parseInt(priceMatch[1] || priceMatch[2]);
     }
 
-    // Filter products
     let filtered = products.filter((product) =>
-      product.name.toLowerCase().includes(lowerQuery.replace(/under\s*\d+|below\s*\d+/, "").trim())
+      product.name
+        .toLowerCase()
+        .includes(lowerQuery.replace(/under\s*\d+|below\s*\d+/, "").trim())
     );
     if (priceFilter) {
       filtered = filtered.filter((product) => product.price <= priceFilter);
@@ -73,9 +75,19 @@ const CategoryPage = () => {
       </div>
 
       {loading ? (
-        <p className="text-center text-gray-600">Loading products...</p>
+        <div className="flex justify-center items-center h-64">
+          <Lottie
+            animationData={loadingAnimation}
+            className="w-full max-w-xs sm:max-w-sm md:max-w-md"
+          />
+        </div>
       ) : filteredProducts.length === 0 ? (
-        <p className="text-center text-gray-600">No products found matching your search.</p>
+        <div className="flex justify-center items-center h-64">
+          <Lottie
+            animationData={notFoundAnimation}
+            className="w-full max-w-xs sm:max-w-sm md:max-w-lg"
+          />
+        </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
           {filteredProducts.map((product) => (
