@@ -4,10 +4,12 @@ import ProductCard from "../components/ProductCard";
 import { Link } from "react-router-dom";
 import Lottie from "lottie-react";
 import notFoundAnimation from "../assets/notfound.json"; // 👈 Import Lottie animation
+import loadingAnimation from "../assets/loading.json"; // 👈 Import Loading animation
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Check if mobile on component mount and window resize
@@ -23,10 +25,13 @@ const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setLoading(true);
         const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/products`);
         setProducts(res.data);
       } catch (err) {
         console.error("❌ Error fetching products:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -50,7 +55,7 @@ const Home = () => {
           muted
           playsInline
           className="w-full h-full object-cover"
-          key={isMobile ? "mobile" : "desktop"} // Force re-render on change
+          key={isMobile ? "mobile" : "desktop"}
         >
           <source 
             src={isMobile ? "/mobilevideo.mp4" : "/vid2.mp4"} 
@@ -62,7 +67,16 @@ const Home = () => {
 
       {/* Products Section */}
       <div className="container mx-auto px-4 py-8">
-        {products.length === 0 ? (
+        {loading ? (
+          <div className="flex justify-center items-center min-h-[50vh]">
+            <Lottie
+              animationData={loadingAnimation}
+              loop
+              autoplay
+              className="w-64 h-64 sm:w-80 sm:h-80"
+            />
+          </div>
+        ) : products.length === 0 ? (
           <div className="flex justify-center items-center min-h-[50vh]">
             <Lottie
               animationData={notFoundAnimation}

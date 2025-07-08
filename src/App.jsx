@@ -14,7 +14,6 @@ const App = () => {
   return (
     <>
     <Navbar />
-    
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/category/:categoryName" element={<CategoryPage/>} />
@@ -30,9 +29,7 @@ const App = () => {
         <Route path="/admin/products/edit/:id" element={
           <PrivateRoute>< EditProduct/></PrivateRoute>} />
       </Routes>
-  
     </>
   );
 };
-
 export default App;
