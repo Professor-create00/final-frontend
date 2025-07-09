@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { addToCart } from "../utils/cart";
+import Lottie from "lottie-react";
+import loadingAnimation from "../assets/loading.json"; 
 
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -11,7 +13,6 @@ const ProductDetailPage = () => {
   const [orderData, setOrderData] = useState({ name: "", phone: "", address: "" });
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const [notification, setNotification] = useState({ show: false, message: "", type: "" });
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -19,11 +20,9 @@ const ProductDetailPage = () => {
         const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/products/${id}`);
         setProduct(res.data);
         setActiveImage(res.data.images[0]);
-        setError(false);
       } catch (err) {
         console.error("Error fetching product:", err);
         showNotification("Failed to load product", "error");
-        setError(true);
       }
     };
 
@@ -61,21 +60,17 @@ const ProductDetailPage = () => {
     }
   };
 
-  if (!product && !error)
+  if (!product)
     return (
       <div className="flex justify-center items-center h-[50vh]">
-        <p className="text-lg">Loading product...</p>
+        <Lottie
+          animationData={loadingAnimation}
+          loop
+          autoplay
+          className="w-48 h-48 sm:w-64 sm:h-64"
+        />
       </div>
     );
-
-  if (error || !product) {
-    return (
-      <div className="flex justify-center items-center h-[50vh]">
-        <p className="text-lg">No product found</p>
-      </div>
-    );
-  }
-
   return (
     <div className="container mx-auto px-4 py-8 font-sans relative">
       {/* Notification UI */}

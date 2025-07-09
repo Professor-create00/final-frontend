@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import ProductCard from "../components/ProductCard";
+import Lottie from "lottie-react";
+import loadingAnimation from "../assets/loading.json";
+import notFoundAnimation from "../assets/notfound.json";
 
 const CategoryPage = () => {
   const { categoryName } = useParams();
@@ -73,11 +76,17 @@ const CategoryPage = () => {
 
       {loading ? (
         <div className="flex justify-center items-center h-64">
-          <p className="text-lg">Loading products...</p>
+          <Lottie
+            animationData={loadingAnimation}
+            className="w-full max-w-xs sm:max-w-sm md:max-w-md"
+          />
         </div>
       ) : filteredProducts.length === 0 ? (
         <div className="flex justify-center items-center h-64">
-          <p className="text-lg">No products found</p>
+          <Lottie
+            animationData={notFoundAnimation}
+            className="w-full max-w-xs sm:max-w-sm md:max-w-lg"
+          />
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
