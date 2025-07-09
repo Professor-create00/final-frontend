@@ -3,20 +3,20 @@ import axios from "axios";
 import ProductCard from "../components/ProductCard";
 import { Link } from "react-router-dom";
 import Lottie from "lottie-react";
-import notFoundAnimation from "../assets/notfound.json"; // 👈 Import Lottie animation
-import loadingAnimation from "../assets/loading.json"; // 👈 Import Loading animation
+import notFoundAnimation from "../assets/notfound.json";
+import loadingAnimation from "../assets/loading.json";
 
 const Home = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(null); // Start with null to detect initial state
   const [isMobile, setIsMobile] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Check if mobile on component mount and window resize
     const checkIfMobile = () => {
-      setIsMobile(window.innerWidth < 768); // 768px is common breakpoint
+      setIsMobile(window.innerWidth < 768);
     };
-    checkIfMobile(); // Initial check
+    checkIfMobile();
     window.addEventListener('resize', checkIfMobile);
 
     return () => window.removeEventListener('resize', checkIfMobile);
@@ -30,6 +30,7 @@ const Home = () => {
         setProducts(res.data);
       } catch (err) {
         console.error("❌ Error fetching products:", err);
+        setProducts([]); // Treat error as no products
       } finally {
         setLoading(false);
       }
@@ -48,7 +49,7 @@ const Home = () => {
 
   return (
     <div>
-      {/* Video Section - Different video for mobile/desktop */}
+      {/* Video Section */}
       <div className="w-full h-[70vh] overflow-hidden relative">
         <video
           autoPlay
@@ -57,9 +58,9 @@ const Home = () => {
           className="w-full h-full object-cover"
           key={isMobile ? "mobile" : "desktop"}
         >
-          <source 
-            src={isMobile ? "/mobilevideo.mp4" : "/vid2.mp4"} 
-            type="video/mp4" 
+          <source
+            src={isMobile ? "/mobilevideo.mp4" : "/vid2.mp4"}
+            type="video/mp4"
           />
           Your browser does not support the video tag.
         </video>
@@ -76,7 +77,7 @@ const Home = () => {
               className="w-64 h-64 sm:w-80 sm:h-80"
             />
           </div>
-        ) : products.length === 0 ? (
+        ) : products && products.length === 0 ? (
           <div className="flex justify-center items-center min-h-[50vh]">
             <Lottie
               animationData={notFoundAnimation}
@@ -86,7 +87,7 @@ const Home = () => {
             />
           </div>
         ) : (
-          categories.map(({ name, title }) => {
+          products && categories.map(({ name, title }) => {
             const categoryProducts = products
               .filter((p) => p.category.toLowerCase() === name.toLowerCase())
               .slice(0, 4);
